@@ -1,26 +1,37 @@
-// ─── Popup script ────────────────────────────────────────────────────────────
+// ─── Popup script ─────────────────────────────────────────────────────────
 
 const STORAGE_KEY = 'ytDarkVideo_enabled';
 const PRESET_KEY  = 'ytDarkVideo_preset';
 
-const PRESETS = {
-  invert: 'invert(1) hue-rotate(180deg) contrast(0.9) brightness(0.95)',
-  sepia:  'invert(1) hue-rotate(180deg) sepia(0.4) contrast(0.9) brightness(0.9)',
-  green:  'invert(1) hue-rotate(90deg) saturate(1.5) contrast(0.85) brightness(0.9)',
-  blue:   'invert(1) hue-rotate(220deg) saturate(1.3) contrast(0.9) brightness(0.92)',
+// Must match content.js PRESETS keys
+const SMART_PRESETS = new Set(['smart', 'warm']); // SVG per-pixel modes
+const PRESET_DESCS  = {
+  smart:  'Only whites inverted · People untouched',
+  warm:   'Smart + warm amber tint on dark areas',
+  invert: 'Full video inverted · Classic mode',
+  green:  'Full invert with green matrix tint',
+  blue:   'Full invert with cool blue tint',
+};
+const PRESET_TITLES = {
+  smart:  'Smart Mode On',
+  warm:   'Warm Smart Mode On',
+  invert: 'Full Invert On',
+  green:  'Matrix Mode On',
+  blue:   'Cool Mode On',
 };
 
-const toggle    = document.getElementById('mainToggle');
-const card      = document.getElementById('mainCard');
+const toggle      = document.getElementById('mainToggle');
+const card        = document.getElementById('mainCard');
 const toggleIcon  = document.getElementById('toggleIcon');
 const toggleTitle = document.getElementById('toggleTitle');
 const toggleDesc  = document.getElementById('toggleDesc');
+const smartBanner = document.getElementById('smartBanner');
 const presetBtns  = document.querySelectorAll('.preset-btn');
 
 let currentEnabled = false;
-let currentPreset  = 'invert';
+let currentPreset  = 'smart';
 
-// ── Sync UI to state ─────────────────────────────────────────────────────────
+// ── UI update ────────────────────────────────────────────────────────────────
 
 function updateUI() {
   toggle.checked = currentEnabled;
@@ -28,8 +39,8 @@ function updateUI() {
   if (currentEnabled) {
     card.classList.add('is-on');
     toggleIcon.textContent  = '🌙';
-    toggleTitle.textContent = 'Dark Mode On';
-    toggleDesc.textContent  = 'Jupyter backgrounds are now dark';
+    toggleTitle.textContent = PRESET_TITLES[currentPreset] || 'Dark Mode On';
+    toggleDesc.textContent  = PRESET_DESCS[currentPreset]  || '';
   } else {
     card.classList.remove('is-on');
     toggleIcon.textContent  = '☀️';
@@ -37,31 +48,29 @@ function updateUI() {
     toggleDesc.textContent  = 'White backgrounds on video';
   }
 
+  // Smart banner: visible only when on + smart/warm preset
+  const showBanner = currentEnabled && SMART_PRESETS.has(currentPreset);
+  smartBanner.classList.toggle('visible', showBanner);
+
+  // Preset active states
   presetBtns.forEach((btn) => {
     btn.classList.toggle('active', btn.dataset.preset === currentPreset);
   });
 }
 
-// ── Send command to the active YouTube tab ───────────────────────────────────
+// ── Send state to the active YouTube tab ─────────────────────────────────────
 
 async function sendToTab(message) {
   const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
   if (!tab?.id) return;
-  try {
-    await browser.tabs.sendMessage(tab.id, message);
-  } catch (_) {
-    // Tab may not have the content script loaded yet — safe to ignore
-  }
+  try { await browser.tabs.sendMessage(tab.id, message); } catch (_) {}
 }
 
-// ── Event listeners ──────────────────────────────────────────────────────────
+// ── Events ───────────────────────────────────────────────────────────────────
 
 toggle.addEventListener('change', async () => {
   currentEnabled = toggle.checked;
-  await browser.storage.local.set({
-    [STORAGE_KEY]: currentEnabled,
-    [PRESET_KEY]:  currentPreset,
-  });
+  await browser.storage.local.set({ [STORAGE_KEY]: currentEnabled, [PRESET_KEY]: currentPreset });
   updateUI();
   sendToTab({ type: 'SET_STATE', enabled: currentEnabled, preset: currentPreset });
 });
@@ -77,10 +86,10 @@ presetBtns.forEach((btn) => {
   });
 });
 
-// ── Bootstrap: load saved state ──────────────────────────────────────────────
+// ── Bootstrap ─────────────────────────────────────────────────────────────────
 
 browser.storage.local.get([STORAGE_KEY, PRESET_KEY]).then((result) => {
   currentEnabled = !!result[STORAGE_KEY];
-  currentPreset  = result[PRESET_KEY] || 'invert';
+  currentPreset  = result[PRESET_KEY] || 'smart';
   updateUI();
 });

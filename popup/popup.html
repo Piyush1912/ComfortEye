@@ -10,6 +10,7 @@
 </head>
 <body>
   <div class="container">
+
     <!-- Header -->
     <div class="header">
       <div class="logo">
@@ -36,25 +37,65 @@
       </label>
     </div>
 
+    <!-- Smart mode badge -->
+    <div class="smart-banner" id="smartBanner">
+      <div class="smart-banner-left">
+        <span class="smart-pulse"></span>
+        <span class="smart-label">Smart Mode Active</span>
+      </div>
+      <span class="smart-desc">Only whites inverted · People untouched</span>
+    </div>
+
     <!-- Presets -->
     <div class="section-label">Filter Presets</div>
     <div class="presets">
-      <button class="preset-btn active" data-preset="invert" id="preset-invert">
+
+      <!-- Smart (new default, spans full row) -->
+      <button class="preset-btn preset-smart active" data-preset="smart" id="preset-smart">
+        <span class="preset-icon">✨</span>
+        <div class="preset-text">
+          <span class="preset-name">Smart</span>
+          <span class="preset-hint">Whites only</span>
+        </div>
+        <span class="preset-badge">NEW</span>
+      </button>
+
+      <!-- Warm smart -->
+      <button class="preset-btn preset-warm" data-preset="warm" id="preset-warm">
+        <span class="preset-icon">🕯️</span>
+        <div class="preset-text">
+          <span class="preset-name">Warm</span>
+          <span class="preset-hint">Amber tint</span>
+        </div>
+      </button>
+
+      <!-- Full invert -->
+      <button class="preset-btn" data-preset="invert" id="preset-invert">
         <span class="preset-icon">🔄</span>
-        <span>Invert</span>
+        <div class="preset-text">
+          <span class="preset-name">Full</span>
+          <span class="preset-hint">All inverted</span>
+        </div>
       </button>
-      <button class="preset-btn" data-preset="sepia" id="preset-sepia">
-        <span class="preset-icon">🟤</span>
-        <span>Warm</span>
-      </button>
+
+      <!-- Matrix -->
       <button class="preset-btn" data-preset="green" id="preset-green">
         <span class="preset-icon">💚</span>
-        <span>Matrix</span>
+        <div class="preset-text">
+          <span class="preset-name">Matrix</span>
+          <span class="preset-hint">Green tint</span>
+        </div>
       </button>
+
+      <!-- Cool -->
       <button class="preset-btn" data-preset="blue" id="preset-blue">
         <span class="preset-icon">🔵</span>
-        <span>Cool</span>
+        <div class="preset-text">
+          <span class="preset-name">Cool</span>
+          <span class="preset-hint">Blue tint</span>
+        </div>
       </button>
+
     </div>
 
     <!-- Shortcut hint -->
@@ -69,6 +110,7 @@
     <div class="footer">
       Works on YouTube • Jupyter, slides &amp; whiteboards
     </div>
+
   </div>
   <script src="popup.js"></script>
 </body>
