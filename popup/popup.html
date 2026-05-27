@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YT Dark Video</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <span class="logo-icon">🌙</span>
+        <div class="logo-text">
+          <span class="logo-title">YT Dark Video</span>
+          <span class="logo-sub">Jupyter-friendly mode</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Toggle -->
+    <div class="toggle-card" id="mainCard">
+      <div class="toggle-info">
+        <span class="toggle-icon" id="toggleIcon">☀️</span>
+        <div class="toggle-text">
+          <span class="toggle-title" id="toggleTitle">Dark Mode Off</span>
+          <span class="toggle-desc" id="toggleDesc">White backgrounds on video</span>
+        </div>
+      </div>
+      <label class="switch" aria-label="Toggle dark video">
+        <input type="checkbox" id="mainToggle" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <!-- Presets -->
+    <div class="section-label">Filter Presets</div>
+    <div class="presets">
+      <button class="preset-btn active" data-preset="invert" id="preset-invert">
+        <span class="preset-icon">🔄</span>
+        <span>Invert</span>
+      </button>
+      <button class="preset-btn" data-preset="sepia" id="preset-sepia">
+        <span class="preset-icon">🟤</span>
+        <span>Warm</span>
+      </button>
+      <button class="preset-btn" data-preset="green" id="preset-green">
+        <span class="preset-icon">💚</span>
+        <span>Matrix</span>
+      </button>
+      <button class="preset-btn" data-preset="blue" id="preset-blue">
+        <span class="preset-icon">🔵</span>
+        <span>Cool</span>
+      </button>
+    </div>
+
+    <!-- Shortcut hint -->
+    <div class="shortcut-hint">
+      <span class="shortcut-key">Alt</span>
+      <span class="shortcut-plus">+</span>
+      <span class="shortcut-key">D</span>
+      <span class="shortcut-text">to toggle on YouTube</span>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      Works on YouTube • Jupyter, slides &amp; whiteboards
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

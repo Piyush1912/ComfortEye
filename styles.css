@@ -1,0 +1,74 @@
+/* ─── YT Dark Video – styles.css ────────────────────────────────────────────
+   Styles for the injected button inside the YouTube player controls bar.
+   ────────────────────────────────────────────────────────────────────────── */
+
+#ytdv-btn {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  height: 48px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: 'Roboto', 'YouTube Noto', sans-serif;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 4px;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+}
+
+#ytdv-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+#ytdv-btn:hover::before {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+#ytdv-btn:active {
+  transform: scale(0.94);
+}
+
+#ytdv-btn .ytdv-icon {
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+
+#ytdv-btn .ytdv-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  opacity: 0.8;
+}
+
+/* Active (dark mode ON) state */
+#ytdv-btn.ytdv-active {
+  color: #a78bfa;
+  text-shadow: 0 0 8px rgba(167, 139, 250, 0.6);
+}
+
+#ytdv-btn.ytdv-active .ytdv-icon {
+  transform: rotate(360deg);
+}
+
+#ytdv-btn.ytdv-active .ytdv-label {
+  opacity: 1;
+  color: #c4b5fd;
+}
+
+#ytdv-btn.ytdv-active::before {
+  background: rgba(167, 139, 250, 0.15) !important;
+}

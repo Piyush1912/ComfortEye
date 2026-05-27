@@ -1,0 +1,36 @@
+{
+  "manifest_version": 2,
+  "name": "YT Dark Mode Video",
+  "version": "1.0.0",
+  "description": "Inverts the video colors on YouTube — turns white Jupyter/slide backgrounds dark and keeps text readable.",
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "48": "icons/icon-48.png",
+      "96": "icons/icon-96.png"
+    },
+    "default_title": "YT Dark Video"
+  },
+  "permissions": [
+    "storage",
+    "*://*.youtube.com/*"
+  ],
+  "applications": {
+    "gecko": {
+      "id": "yt-dark-video@local",
+      "strict_min_version": "57.0"
+    }
+  }
+}

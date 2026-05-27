@@ -1,0 +1,194 @@
+/* ─── Popup styles ──────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0f0f13;
+  --surface: #1a1a24;
+  --surface2: #22222f;
+  --border: rgba(255,255,255,0.08);
+  --accent: #a78bfa;
+  --accent-glow: rgba(167,139,250,0.3);
+  --text: #f1f0f7;
+  --text-muted: #888899;
+  --on: #a78bfa;
+  --on-glow: rgba(167,139,250,0.25);
+  --radius: 12px;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  width: 280px;
+  min-height: 100px;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.container { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+
+.header { display: flex; align-items: center; justify-content: space-between; }
+
+.logo { display: flex; align-items: center; gap: 10px; }
+
+.logo-icon {
+  font-size: 26px;
+  filter: drop-shadow(0 0 8px var(--accent-glow));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.logo-text { display: flex; flex-direction: column; }
+.logo-title { font-size: 14px; font-weight: 700; letter-spacing: -0.3px; }
+.logo-sub { font-size: 10px; color: var(--text-muted); font-weight: 500; }
+
+/* ── Main Toggle Card ── */
+.toggle-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.toggle-card.is-on {
+  border-color: rgba(167,139,250,0.35);
+  box-shadow: 0 0 20px var(--on-glow), inset 0 0 15px rgba(167,139,250,0.05);
+}
+
+.toggle-info { display: flex; align-items: center; gap: 12px; }
+
+.toggle-icon {
+  font-size: 22px;
+  transition: transform 0.4s ease;
+  display: block;
+  min-width: 26px;
+  text-align: center;
+}
+
+.toggle-card.is-on .toggle-icon { transform: rotate(360deg); }
+
+.toggle-text { display: flex; flex-direction: column; gap: 2px; }
+.toggle-title { font-size: 13px; font-weight: 600; }
+.toggle-desc { font-size: 11px; color: var(--text-muted); }
+
+/* ── Toggle Switch ── */
+.switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+  position: absolute; inset: 0;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.slider::before {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  left: 2px; top: 2px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1), background 0.3s;
+}
+
+input:checked + .slider {
+  background: var(--on);
+  border-color: var(--on);
+  box-shadow: 0 0 12px var(--on-glow);
+}
+
+input:checked + .slider::before {
+  transform: translateX(20px);
+  background: #fff;
+}
+
+/* ── Presets ── */
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  padding: 0 2px;
+}
+
+.presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+
+.preset-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.preset-btn:hover {
+  background: var(--surface2);
+  transform: translateY(-1px);
+}
+
+.preset-btn.active {
+  border-color: var(--accent);
+  background: rgba(167,139,250,0.12);
+  box-shadow: 0 0 10px rgba(167,139,250,0.2);
+  color: var(--accent);
+}
+
+.preset-icon { font-size: 16px; }
+
+/* ── Shortcut Hint ── */
+.shortcut-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px;
+  background: var(--surface);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.shortcut-key {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: monospace;
+  color: var(--accent);
+}
+
+.shortcut-plus { font-size: 10px; color: var(--text-muted); }
+
+.shortcut-text { font-size: 10px; color: var(--text-muted); margin-left: 2px; }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-muted);
+  padding-bottom: 2px;
+}
