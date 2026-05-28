@@ -39,12 +39,27 @@ function injectSVGFilters() {
   svg.innerHTML = `
     <defs>
 
-      <!-- ★ SMART MODE: invert only near-white pixels ───────────────────── -->
+      <!-- ★ SMART MODE: invert whole white regions, not just individual pixels
+
+           KEY IDEA: blur the frame FIRST to get each pixel's neighbourhood
+           average. Small dark elements (text, dots, syntax colours) that live
+           inside a white region get "absorbed" into the surrounding whiteness
+           after blurring, so the whole region reads as white and inverts
+           together — no more hazy leftover pixels.
+
+           The person/teacher occupies a large non-white region; their blurred
+           neighbourhood average stays well below the threshold → untouched.
+
+           feGaussianBlur is GPU-accelerated (WebGL) in Firefox.
+           primitiveUnits="objectBoundingBox" makes stdDeviation a fraction of
+           the video's display size so it auto-scales at any resolution.     -->
+
       <filter id="ytdv-filter-smart"
               color-interpolation-filters="sRGB"
-              x="0%" y="0%" width="100%" height="100%">
+              x="0%" y="0%" width="100%" height="100%"
+              primitiveUnits="objectBoundingBox">
 
-        <!-- Step 1: inverted copy -->
+        <!-- Step 1: Create a fully inverted copy of the raw frame -->
         <feColorMatrix in="SourceGraphic" type="matrix"
           values="-1  0  0  0  1
                    0 -1  0  0  1
@@ -52,24 +67,33 @@ function injectSVGFilters() {
                    0  0  0  1  0"
           result="inv"/>
 
-        <!-- Step 2: luminance → alpha (bright pixels = high alpha) -->
-        <feColorMatrix in="SourceGraphic"
-          type="luminanceToAlpha"
-          result="lum"/>
+        <!-- Step 2: Blur the original to compute neighbourhood average.
+             stdDeviation 0.03 × 0.04 = 3% of width, 4% of height.
+             At 1280×720 that's ~38×29 px — large enough to swallow any
+             text character or small coloured dot, small enough to leave
+             the teacher's face/body region clearly distinct.             -->
+        <feGaussianBlur in="SourceGraphic"
+          stdDeviation="0.03 0.04"
+          result="blurred"/>
 
-        <!-- Step 3: steep curve — only lum > 0.75 gets a non-zero alpha.
-             slope=12, intercept=-9  →  threshold at lum = 0.75
-             fully opaque at lum ≈ 0.83                                   -->
-        <feComponentTransfer in="lum" result="mask">
+        <!-- Step 3: Extract luminance from the BLURRED neighbourhood.
+             "Is the area around this pixel mostly white?"               -->
+        <feColorMatrix in="blurred" type="luminanceToAlpha" result="region_lum"/>
+
+        <!-- Step 4: Steep linear threshold.
+             neighbourhood lum < 0.75  → alpha 0  (keep original)
+             neighbourhood lum 0.75–0.83 → 0–1  (soft edge)
+             neighbourhood lum > 0.83  → alpha 1  (fully invert)         -->
+        <feComponentTransfer in="region_lum" result="mask">
           <feFuncA type="linear" slope="12" intercept="-9"/>
         </feComponentTransfer>
 
-        <!-- Step 4: apply mask to inverted image -->
+        <!-- Step 5: Mask the inverted image with the region mask -->
         <feComposite in="inv" in2="mask" operator="in" result="inv_masked"/>
 
-        <!-- Step 5: composite masked-invert over original
-             Where mask=0 (person/objects): original shines through
-             Where mask=1 (white bg): inverted (dark) layer covers         -->
+        <!-- Step 6: Lay masked-invert on top of the original.
+             White-region pixels → dark inverted layer on top.
+             Non-white-region pixels → original shows through.           -->
         <feComposite in="inv_masked" in2="SourceGraphic" operator="over"/>
       </filter>
 
@@ -84,12 +108,13 @@ function injectSVGFilters() {
                    0  0  0  1  0"/>
       </filter>
 
-      <!-- WARM SMART MODE: smart + gentle warm tint on the dark areas ──── -->
+      <!-- WARM SMART MODE: same region-aware logic + amber dark tint ───── -->
       <filter id="ytdv-filter-warm"
               color-interpolation-filters="sRGB"
-              x="0%" y="0%" width="100%" height="100%">
+              x="0%" y="0%" width="100%" height="100%"
+              primitiveUnits="objectBoundingBox">
 
-        <!-- Invert with warm bias: dark areas lean amber instead of cold black -->
+        <!-- Warm invert: dark areas lean amber/candlelight rather than cold black -->
         <feColorMatrix in="SourceGraphic" type="matrix"
           values="-0.95  0      0     0  0.18
                    0    -0.95   0     0  0.14
@@ -97,8 +122,13 @@ function injectSVGFilters() {
                    0     0      0     1  0"
           result="inv_warm"/>
 
-        <feColorMatrix in="SourceGraphic" type="luminanceToAlpha" result="lum"/>
-        <feComponentTransfer in="lum" result="mask">
+        <!-- Same neighbourhood blur as Smart mode -->
+        <feGaussianBlur in="SourceGraphic"
+          stdDeviation="0.03 0.04"
+          result="blurred"/>
+
+        <feColorMatrix in="blurred" type="luminanceToAlpha" result="region_lum"/>
+        <feComponentTransfer in="region_lum" result="mask">
           <feFuncA type="linear" slope="12" intercept="-9"/>
         </feComponentTransfer>
         <feComposite in="inv_warm" in2="mask" operator="in" result="inv_masked"/>
