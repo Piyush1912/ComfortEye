@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — YT Dark Video</title>
+  <style>
+    :root {
+      --bg: #0f0f13;
+      --surface: #1a1a24;
+      --accent: #a78bfa;
+      --text: #f1f0f7;
+      --muted: #888899;
+      --border: rgba(255,255,255,0.08);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 40px 20px;
+    }
+    .container { max-width: 680px; margin: 0 auto; }
+    .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
+    .logo-icon { font-size: 36px; filter: drop-shadow(0 0 10px rgba(167,139,250,0.5)); }
+    .logo-name { font-size: 22px; font-weight: 700; }
+    .logo-sub  { font-size: 13px; color: var(--muted); }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .last-updated { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
+    section { margin-bottom: 32px; }
+    h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    p  { font-size: 15px; color: #c8c7d4; margin-bottom: 12px; }
+    ul { font-size: 15px; color: #c8c7d4; padding-left: 20px; }
+    ul li { margin-bottom: 6px; }
+    .highlight {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 15px;
+      color: var(--text);
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="logo">
+      <span class="logo-icon">🌙</span>
+      <div>
+        <div class="logo-name">YT Dark Video</div>
+        <div class="logo-sub">Firefox Extension</div>
+      </div>
+    </div>
+
+    <h1>Privacy Policy</h1>
+    <p class="last-updated">Last updated: June 2026</p>
+
+    <div class="highlight">
+      <strong>Short version:</strong> This extension does not collect, transmit, or share any data about you or your browsing. Everything stays on your device.
+    </div>
+
+    <section>
+      <h2>What data we collect</h2>
+      <p><strong>None.</strong> YT Dark Video does not collect any personal data, browsing history, or usage statistics.</p>
+    </section>
+
+    <section>
+      <h2>What we store locally</h2>
+      <p>The extension uses <code>browser.storage.local</code> (your device only) to remember two settings:</p>
+      <ul>
+        <li>Whether dark mode is enabled (on/off)</li>
+        <li>Which filter preset you last used (Smart, Warm, Full, Matrix, Cool)</li>
+      </ul>
+      <p>This data never leaves your device and is not accessible to anyone other than you.</p>
+    </section>
+
+    <section>
+      <h2>Network requests</h2>
+      <p>This extension makes <strong>zero network requests</strong>. It does not contact any external server, analytics service, or API. All processing happens locally in your browser using GPU-accelerated SVG filters.</p>
+    </section>
+
+    <section>
+      <h2>Permissions explained</h2>
+      <ul>
+        <li><strong>storage</strong> — to save your on/off and preset preferences locally</li>
+        <li><strong>*://*.youtube.com/*</strong> — to inject the dark filter on YouTube pages only</li>
+      </ul>
+      <p>No other permissions are requested or used.</p>
+    </section>
+
+    <section>
+      <h2>Third-party services</h2>
+      <p>None. The extension does not integrate with any third-party service, analytics platform, or advertising network.</p>
+    </section>
+
+    <section>
+      <h2>Open source</h2>
+      <p>This extension is fully open source. You can inspect every line of code at:<br/>
+        <a href="https://github.com/Piyush1912/ComfortEye" target="_blank">github.com/Piyush1912/ComfortEye</a>
+      </p>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <p>Questions or concerns? Open an issue on the GitHub repository above.</p>
+    </section>
+
+    <footer>
+      YT Dark Video — Free, open-source Firefox extension. No data collected, ever.
+    </footer>
+
+  </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 // ─── YT Dark Video – content.js ────────────────────────────────────────────
-// Applies filters to the YouTube video element so that white Jupyter/slide
+// Applies filters to the YouTube video element so that white slide/whiteboard
 // backgrounds become dark while keeping other colours (people, objects) sane.
 
 const STORAGE_KEY = 'ytDarkVideo_enabled';

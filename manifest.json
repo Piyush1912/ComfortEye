@@ -1,8 +1,10 @@
 {
   "manifest_version": 2,
-  "name": "YT Dark Mode Video",
+  "name": "YT Dark Video — Smart Mode",
   "version": "1.0.0",
-  "description": "Inverts the video colors on YouTube — turns white Jupyter/slide backgrounds dark and keeps text readable.",
+  "description": "Darkens white slide/whiteboard backgrounds in YouTube videos. Smart Mode inverts only near-white regions using GPU filters — no ML, no CPU load. The teacher stays in original color.",
+  "homepage_url": "https://github.com/Piyush1912/ComfortEye",
+  "author": "Piyush Pratap Singh",
   "icons": {
     "48": "icons/icon-48.png",
     "96": "icons/icon-96.png"
@@ -29,7 +31,7 @@
   ],
   "applications": {
     "gecko": {
-      "id": "yt-dark-video@local",
+      "id": "comfort-eye@piyush1912",
       "strict_min_version": "57.0"
     }
   }
